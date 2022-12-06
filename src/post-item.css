@@ -1,0 +1,10 @@
+.post-item-wrapper {
+    border: 1px solid black;
+    margin: 2em;
+}
+
+.post-picture {
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+}
