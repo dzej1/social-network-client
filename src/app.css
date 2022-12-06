@@ -1,4 +1,12 @@
 html {
     width: 66%;
-    margin: auto
+    margin: auto;
+    max-width: 810px;
+}
+
+.post-content  {
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

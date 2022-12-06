@@ -46,22 +46,22 @@ const initialFormValues = {
 const NewPostForm: FC<NewPostFormProps> = (props) => {
     const queryClient = useQueryClient()
     const [formValues, dispatchValueChange] = useReducer(reducer, initialFormValues)
-    const createMutation = useMutation({
+    const mutation = useMutation({
         mutationFn: async (newPost: NewPost) => {
             return await createPost(newPost)
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['posts'] })
+            props.closeForm()
         },
     })
-    const changeInput = (e:React.ChangeEvent<HTMLInputElement>): void => {
+    const changeInput = (e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void => {
         return dispatchValueChange({newValue:e.target.value, type: e.target.name})
     }
 
     const onSubmit = (e:React.FormEvent): void => {
         e.preventDefault()
-        createMutation.mutate(formValues)
-        props.closeForm()
+        mutation.mutate(formValues)
     }
 
     return <form onSubmit={onSubmit}>
@@ -71,13 +71,13 @@ const NewPostForm: FC<NewPostFormProps> = (props) => {
         </label><br />
         <label>
             Content:<br />
-            <input type="text" name="content" onChange={changeInput} required/>
+            <textarea name="content" onChange={changeInput} required/>
         </label><br />
         <label>
             Picture URL:<br />
             <input type="text" name="picture" onChange={changeInput} required/>
         </label><br />
-        <input type="submit" value="Create new post" />
+        <input type="submit" value="Create new post" disabled={mutation.isLoading}/>
     </form>
 }
 
